@@ -110,13 +110,9 @@ public class UserServiceImplementation implements UserService {
             }else{
                 throw new IllegalArgumentException("Photo not found ");
             }
-
-
-
         } catch (IOException e) {
             throw new RuntimeException(e);
         }
-
     }
 
     @Override
@@ -137,15 +133,12 @@ public class UserServiceImplementation implements UserService {
 
     @Override
     public ResponseEntity<Object> userInfo(Long id) {
-
         Optional<UserInfo> userInfoOptional = usersRepository.findUserById(id);
-
         if (userInfoOptional.isPresent()) {
             UserInfo userInfo = userInfoOptional.get();
             System.out.println(userInfo);
             return new ResponseEntity<>(userInfo, HttpStatus.OK);
         } else {
-
             String errorMessage = "User not found";
             return new ResponseEntity<>(errorMessage, HttpStatus.NOT_FOUND);
         }
@@ -158,10 +151,10 @@ public class UserServiceImplementation implements UserService {
         userEntity.setFullName(userInfo.getFullName());
         userEntity.setContact(userInfo.getContact());
         userEntity.setEmail(userInfo.getEmail());
-
         usersRepository.save(userEntity);
         return new ResponseEntity<>(new Response("Updated Successfully"), HttpStatus.OK);
     }
+
 
     @Override
     public ResponseEntity<Object> updatePassword(Password password) {
@@ -173,7 +166,5 @@ public class UserServiceImplementation implements UserService {
             usersRepository.save(userEntity);
             return new ResponseEntity<>(new Response("Password has been updated successfully"),HttpStatus.OK);
         }
-
     }
-
 }

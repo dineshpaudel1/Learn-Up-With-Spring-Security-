@@ -34,10 +34,6 @@ public class CourseController {
         Course course = mapper.readValue(data, Course.class);
         return courseService.addCourse(course, file);
     }
-    @GetMapping("/my")
-    public String output(){
-        return "this is output";
-    }
 
     @GetMapping("/users/courses")
     public ResponseEntity<List<CourseResponse>> getCourse(){

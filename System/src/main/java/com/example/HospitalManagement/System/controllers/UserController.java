@@ -19,7 +19,7 @@ public class UserController {
     private final UserService userService;
 
     @GetMapping("/user/info")
-    public ResponseEntity<Object> getUserInfo(){
+    public ResponseEntity<Object>getUserInfo(){
        UserEntity user = (UserEntity) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
         System.out.println(user);
        Long id = user.getId();

@@ -1,22 +1,20 @@
-package com.example.HospitalManagement.System.entity;
+package com.example.HospitalManagement.System.entity.CourseCategory;
 
 import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
-import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
-
-import java.io.Serializable;
 
 @Data
 @AllArgsConstructor
 @NoArgsConstructor
 @Entity
-@Table(name = "roles")
-@Builder
-public class Roles{
+@Table(name = "category")
+public class CategoryEntity {
+
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)
-    private int id;
-    private String name;
+    private int categoryId;
+
+    private String categoryName;
 }
