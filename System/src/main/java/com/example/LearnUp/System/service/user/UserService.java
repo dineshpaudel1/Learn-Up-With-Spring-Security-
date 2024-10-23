@@ -19,4 +19,6 @@ public interface UserService {
     ResponseEntity<Object> updateInfo(UserInfo userInfo);
 
     ResponseEntity<Object> updatePassword(Password password);
+
+    ResponseEntity<Object>getAllUsers();
 }

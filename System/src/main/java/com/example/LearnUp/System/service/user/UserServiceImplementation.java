@@ -26,6 +26,7 @@ import java.io.IOException;
 import java.io.InputStream;
 import java.nio.file.Files;
 import java.nio.file.Paths;
+import java.util.List;
 import java.util.Optional;
 import java.util.UUID;
 import java.util.logging.Level;
@@ -165,6 +166,15 @@ public class UserServiceImplementation implements UserService {
             userEntity.setPassword(new PasswordEncoder().encodePassword(password.getNewPassword()));
             usersRepository.save(userEntity);
             return new ResponseEntity<>(new Response("Password has been updated successfully"),HttpStatus.OK);
+        }
+    }
+    @Override
+    public ResponseEntity<Object> getAllUsers() {
+        List<UserEntity> users = usersRepository.findAll();
+        if (!users.isEmpty()) {
+            return new ResponseEntity<>(users, HttpStatus.OK);
+        } else {
+            return new ResponseEntity<>(new Response("No users found"), HttpStatus.NOT_FOUND);
         }
     }
 }

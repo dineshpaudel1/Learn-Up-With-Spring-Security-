@@ -13,5 +13,6 @@ public class CourseResponse {
     private String courseDescription;
     private String category;
     private Long price;
+    private Double rating;
     private String thumbnail;
 }

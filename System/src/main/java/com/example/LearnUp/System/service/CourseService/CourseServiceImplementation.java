@@ -54,7 +54,9 @@ public class CourseServiceImplementation implements CourseService {
                     .courseDescription(course.getCourseDescription())
                     .category(course.getCategory())
                     .price(course.getPrice())
-                    .thumbnail("api/photo?fileName=" + fileName).build();
+                    .thumbnail("api/photo?fileName=" + fileName)
+                    .rating(course.getRating())
+                    .build();
             courseRepository.save(courseEntity);
             return new ResponseEntity<>(new Response("Course has been added successfully"), HttpStatus.OK);
         }catch (IOException e){
@@ -98,13 +100,14 @@ public class CourseServiceImplementation implements CourseService {
                 existingCourse.setCourseDescription(course.getCourseDescription());
                 existingCourse.setCategory(course.getCategory());
                 existingCourse.setPrice(course.getPrice());
+                existingCourse.setRating(course.getRating());
 
                 if(file != null){
                     String fileName = file.getOriginalFilename();
                     String filepath = path + File.separator + fileName;
 
                     Files.copy(file.getInputStream(), Paths.get(filepath));
-                    existingCourse.setThumbnail("courses/photo?fileName="+fileName);
+                    existingCourse.setThumbnail("api/photo?fileName=" + fileName);
                 }
                 courseRepository.save(existingCourse);
                 return new ResponseEntity<>("Course updated sucessfully",HttpStatus.OK);

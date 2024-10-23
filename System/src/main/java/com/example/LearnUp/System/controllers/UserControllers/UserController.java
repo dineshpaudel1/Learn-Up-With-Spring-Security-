@@ -18,6 +18,11 @@ public class UserController {
 
     private final UserService userService;
 
+    @GetMapping("/users/all")
+    public ResponseEntity<Object> getAllUsers() {
+        return userService.getAllUsers();
+    }
+
     @GetMapping("/user/info")
     public ResponseEntity<Object>getUserInfo(){
        UserEntity user = (UserEntity) SecurityContextHolder.getContext().getAuthentication().getPrincipal();

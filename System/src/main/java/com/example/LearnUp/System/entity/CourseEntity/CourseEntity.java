@@ -26,4 +26,6 @@ public class CourseEntity {
     private Long price;
     @Column(name = "thumbnail")
     private String thumbnail;
+    @Column(name ="rating")
+    private Double rating;
 }
