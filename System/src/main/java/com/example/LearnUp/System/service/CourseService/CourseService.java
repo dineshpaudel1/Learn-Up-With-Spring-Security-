@@ -1,6 +1,5 @@
 package com.example.LearnUp.System.service.CourseService;
 
-
 import com.example.LearnUp.System.model.CourseModel.Course;
 import com.example.LearnUp.System.model.CourseModel.CourseResponse;
 import org.springframework.http.ResponseEntity;
@@ -12,11 +11,15 @@ import java.util.List;
 @Service
 public interface CourseService {
 
-    ResponseEntity<Object>addCourse(Course course, MultipartFile file);
+    // Adds a new course with details and thumbnail image file
+    ResponseEntity<Object> addCourse(Course course, MultipartFile file);
 
-    ResponseEntity<List<CourseResponse>>getCourse();
+    // Retrieves a list of all courses with response format
+    ResponseEntity<List<CourseResponse>> getCourse();
 
-    ResponseEntity<String>deleteCourse(Long courseId);
+    // Deletes a course by its ID
+    ResponseEntity<String> deleteCourse(Long courseId);
 
-    ResponseEntity<String>updateCourse(Long courseId, Course course, MultipartFile file);
+    // Updates course details by ID, including optional new thumbnail image file
+    ResponseEntity<String> updateCourse(Long courseId, Course course, MultipartFile file);
 }

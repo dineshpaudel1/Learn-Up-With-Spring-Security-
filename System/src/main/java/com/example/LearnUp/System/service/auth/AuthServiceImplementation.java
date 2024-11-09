@@ -49,8 +49,6 @@ public class AuthServiceImplementation implements AuthService, UserDetailsServic
             throw new IllegalArgumentException("Contact " + users.getContact()+ " already exist");
         }
 
-
-
         UserEntity userEntity = new UserEntity();
         userEntity.setFullName(users.getFullName());
         userEntity.setUsername(users.getUsername());

@@ -135,8 +135,15 @@ public class UserServiceImplementation implements UserService {
     @Override
     public ResponseEntity<Object> userInfo(Long id) {
         Optional<UserInfo> userInfoOptional = usersRepository.findUserById(id);
+
         if (userInfoOptional.isPresent()) {
             UserInfo userInfo = userInfoOptional.get();
+
+            // Check if photo is available, if not set it to a default value (null or placeholder URL)
+            if (userInfo.getName() == null) {
+                userInfo.setName(null); // or set a default URL, e.g., "https://example.com/default-photo.png"
+            }
+
             System.out.println(userInfo);
             return new ResponseEntity<>(userInfo, HttpStatus.OK);
         } else {

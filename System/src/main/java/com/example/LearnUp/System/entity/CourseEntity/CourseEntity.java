@@ -6,26 +6,39 @@ import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
+
 @Entity
 @Data
 @AllArgsConstructor
 @NoArgsConstructor
-@Table(name="courses")
+@Table(name = "courses")
 @Builder
 public class CourseEntity {
     @Id
-    @GeneratedValue(strategy =GenerationType.AUTO)
+    @GeneratedValue(strategy = GenerationType.AUTO)
     private int id;
-    @Column(name="courseTitle")
+
+    @Column(name = "courseTitle", nullable = false)
     private String courseTitle;
-    @Column(name = "courseDescription")
+
+    @Column(name = "courseDescription", nullable = false, columnDefinition = "TEXT")
     private String courseDescription;
-    @Column(name = "category")
+
+    @Column(name = "category", nullable = false)
     private String category;
-    @Column(name="price")
+
+    @Column(name = "price", nullable = false)
     private Long price;
+
     @Column(name = "thumbnail")
     private String thumbnail;
-    @Column(name ="rating")
+
+    @Column(name = "rating")
     private Double rating;
+
+    @Column(name = "instructor", nullable = false)
+    private String instructor;
+
+    @Column(name = "language", nullable = false)
+    private String language;
 }

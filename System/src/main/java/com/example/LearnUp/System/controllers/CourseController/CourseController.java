@@ -19,32 +19,40 @@ import java.util.List;
 @CrossOrigin("*")
 @RequiredArgsConstructor(onConstructor_ = {@Autowired})
 public class CourseController {
+
     private final ObjectMapper mapper;
 
-    @Value("$project.image")
+    @Value("${project.image}")
     private String path;
 
     private final CourseService courseService;
 
     @PostMapping("/admin/add")
-    public ResponseEntity<Object> addCourse(@RequestParam("course")String data, @RequestParam("file")MultipartFile file)throws IOException {
+    public ResponseEntity<Object> addCourse(
+            @RequestParam("course") String data,
+            @RequestParam("file") MultipartFile file
+    ) throws IOException {
         Course course = mapper.readValue(data, Course.class);
         return courseService.addCourse(course, file);
     }
 
     @GetMapping("/users/courses")
-    public ResponseEntity<List<CourseResponse>> getCourse(){
+    public ResponseEntity<List<CourseResponse>> getCourse() {
         return courseService.getCourse();
     }
 
     @DeleteMapping("/admin/{id}")
-    public ResponseEntity<String>deleteCourse(@PathVariable Long id) throws IOException {
+    public ResponseEntity<String> deleteCourse(@PathVariable Long id) throws IOException {
         return courseService.deleteCourse(id);
     }
 
     @PostMapping("/admin/{courseId}")
-    public ResponseEntity<String>updateCoursse(@PathVariable Long courseId, @RequestParam("courses")String data,@RequestParam(value="file",required=false)MultipartFile file) throws IOException{
+    public ResponseEntity<String> updateCourse(
+            @PathVariable Long courseId,
+            @RequestParam("course") String data,
+            @RequestParam(value = "file", required = false) MultipartFile file
+    ) throws IOException {
         Course course = mapper.readValue(data, Course.class);
-        return courseService.updateCourse(courseId,course,file);
+        return courseService.updateCourse(courseId, course, file);
     }
 }

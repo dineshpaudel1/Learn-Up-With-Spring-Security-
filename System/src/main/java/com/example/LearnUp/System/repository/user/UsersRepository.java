@@ -22,9 +22,10 @@ public interface UsersRepository extends JpaRepository<UserEntity, Long> {
 
     Boolean existsByUsername(String username);
 
-    @Query("SELECT new com.example.LearnUp.System.model.user.UserInfo(u.id,u.fullName,u.username,u.email,u.contact,up.name,u.roles) FROM UserEntity u " +
-            "INNER JOIN PhotosEntity AS up ON " +
-            "u.id = up.userEntity.id " +
+    @Query("SELECT new com.example.LearnUp.System.model.user.UserInfo(u.id, u.fullName, u.username, u.email, u.contact, up.name, u.roles) " +
+            "FROM UserEntity u " +
+            "LEFT JOIN PhotosEntity AS up ON u.id = up.userEntity.id " +
             "WHERE u.id = :id")
     Optional<UserInfo> findUserById(@Param("id") Long id);
+
 }
