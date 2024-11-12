@@ -1,5 +1,6 @@
 package com.example.LearnUp.System.service.CourseService;
 
+import com.example.LearnUp.System.entity.CourseEntity.CourseEntity;
 import com.example.LearnUp.System.model.CourseModel.Course;
 import com.example.LearnUp.System.model.CourseModel.CourseResponse;
 import org.springframework.http.ResponseEntity;
@@ -22,4 +23,7 @@ public interface CourseService {
 
     // Updates course details by ID, including optional new thumbnail image file
     ResponseEntity<String> updateCourse(Long courseId, Course course, MultipartFile file);
+
+    public List<Course> getRecommendedCourses(Long userId);
+    public List<CourseEntity> recommendCourses(Long courseId);
 }

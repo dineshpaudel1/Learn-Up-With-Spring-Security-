@@ -20,7 +20,9 @@ public class EnrollmentController {
     }
 
     @PostMapping("/makeEnroll")
-    public EnrollmentEntity createEnrollment(@RequestBody EnrollmentEntity enrollment) {
+    public String createEnrollment(@RequestBody EnrollmentEntity enrollment) {
+        // Call the service to save enrollment and return the result message
         return enrollmentService.saveEnrollment(enrollment);
     }
+
 }

@@ -65,7 +65,7 @@ public class SecurityConfig {
                                     new AntPathRequestMatcher("/api/admin/**"),
                                     new AntPathRequestMatcher("/api/roles/**"),
                                     new AntPathRequestMatcher("/bye")
-                            ).hasRole("ADMIN")
+                            ).hasRole("USER")
                             .requestMatchers("/api/user/**").hasAnyRole("USER","ADMIN","TEACHER")
                             .anyRequest().authenticated()
             )

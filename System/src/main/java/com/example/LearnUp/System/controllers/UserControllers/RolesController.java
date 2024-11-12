@@ -19,9 +19,9 @@ public class RolesController {
         return rolesService.setRole(id);
     }
 
-    @PutMapping("/managerRole/{id}")
-    public ResponseEntity<Object> setHospitalManager(@PathVariable("id") Long id){
-        return rolesService.setHospitalManager(id);
+    @PutMapping("/teacherRole/{id}")
+    public ResponseEntity<Object> setTeacher(@PathVariable("id") Long id){
+        return rolesService.setTeacherRole(id);
     }
 
     @PutMapping("/userRole/{id}")
@@ -32,7 +32,6 @@ public class RolesController {
 
     @PostMapping("/addRole")
     public ResponseEntity<Object> addRole(@RequestBody Roles roles){
-
         return rolesService.addRole(roles);
     }
 }

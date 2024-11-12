@@ -14,6 +14,7 @@ public class EnrollmentEntity {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
+    private Long userId;  // This field will track the user associated with the enrollment
     private String username;
     private String role;
     private String courseTitle;
@@ -23,7 +24,8 @@ public class EnrollmentEntity {
     public EnrollmentEntity() {
     }
 
-    public EnrollmentEntity(String username, String role, String courseTitle, String instructor) {
+    public EnrollmentEntity(Long userId, String username, String role, String courseTitle, String instructor) {
+        this.userId = userId;
         this.username = username;
         this.role = role;
         this.courseTitle = courseTitle;
@@ -37,6 +39,14 @@ public class EnrollmentEntity {
 
     public void setId(Long id) {
         this.id = id;
+    }
+
+    public Long getUserId() {
+        return userId;
+    }
+
+    public void setUserId(Long userId) {
+        this.userId = userId;
     }
 
     public String getUsername() {

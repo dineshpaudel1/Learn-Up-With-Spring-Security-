@@ -31,8 +31,8 @@ public class RolesServiceImplementation implements RolesService {
     }
 
     @Override
-    public ResponseEntity<Object> setHospitalManager(Long id) {
-        Roles roles = rolesRepository.findByName("ROLE_HOSPITAL_MANAGER").get();
+    public ResponseEntity<Object> setTeacherRole(Long id) {
+        Roles roles = rolesRepository.findByName("ROLE_TEACHER").get();
         UserRoles userRoles = userRolesRepository.findUserRoleById(id);
         userRoles.setRoles(roles);
         userRolesRepository.save(userRoles);

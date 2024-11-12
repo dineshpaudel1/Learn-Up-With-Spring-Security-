@@ -1,10 +1,13 @@
 package com.example.LearnUp.System.service.CourseService;
 
 import com.example.LearnUp.System.entity.CourseEntity.CourseEntity;
+import com.example.LearnUp.System.entity.EnrollmentEntity.EnrollmentEntity;
 import com.example.LearnUp.System.model.CourseModel.Course;
 import com.example.LearnUp.System.model.CourseModel.CourseResponse;
 import com.example.LearnUp.System.model.Response;
 import com.example.LearnUp.System.repository.CourseRepository.CourseRepository;
+import com.example.LearnUp.System.repository.EnrollmentRepo.EnrollmentRepository;
+import com.example.LearnUp.System.service.EnrollmentService.EnrollmentService;
 import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
@@ -17,6 +20,7 @@ import java.io.File;
 import java.io.IOException;
 import java.nio.file.Files;
 import java.nio.file.Paths;
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
 import java.util.UUID;
@@ -27,6 +31,12 @@ public class CourseServiceImplementation implements CourseService {
 
     @Autowired
     private CourseRepository courseRepository;
+
+    @Autowired
+    private EnrollmentRepository enrollmentRepository;
+
+    @Autowired
+    private EnrollmentService enrollmentService;
 
     @Value("${project.image}")
     private String path;
@@ -66,6 +76,32 @@ public class CourseServiceImplementation implements CourseService {
         } catch (IOException e) {
             throw new RuntimeException("Error adding course", e);
         }
+    }
+
+    public List<Course> getRecommendedCourses(Long userId) {
+        // Retrieve user's enrolled courses
+        List<EnrollmentEntity> userEnrollments = enrollmentService.getUserEnrollments(userId);
+
+        // Get categories or tags from the enrolled courses
+        List<String> preferredCategories = userEnrollments.stream()
+                .map(enrollment -> enrollment.getCourseTitle()) // Get titles or categories
+                .collect(Collectors.toList());
+
+        // Fetch all courses
+        List<CourseEntity> allCourses = courseRepository.findAll();
+
+        // Filter and recommend courses based on similar categories
+        List<Course> recommendedCourses = new ArrayList<>();
+        for (CourseEntity courseEntity : allCourses) {
+            if (preferredCategories.contains(courseEntity.getCategory())) {
+                Course course = new Course(courseEntity.getCourseTitle(), courseEntity.getCourseDescription(),
+                        courseEntity.getCategory(), courseEntity.getPrice(), courseEntity.getRating(),
+                        courseEntity.getThumbnail(), courseEntity.getInstructor(), courseEntity.getLanguage());
+                recommendedCourses.add(course);
+            }
+        }
+
+        return recommendedCourses;
     }
 
     @Override
@@ -130,6 +166,26 @@ public class CourseServiceImplementation implements CourseService {
             }
         } catch (Exception e) {
             return new ResponseEntity<>("Error while updating course: " + e.getMessage(), HttpStatus.INTERNAL_SERVER_ERROR);
+        }
+    }
+
+    public List<CourseEntity> recommendCourses(Long courseId) {
+        // Fetch the course that the user clicked on
+        Optional<CourseEntity> course = courseRepository.findById(courseId);
+        if (course.isPresent()) {
+            CourseEntity clickedCourse = course.get();
+
+            // Fetch other courses with similar category, instructor, and language
+            List<CourseEntity> recommendedCourses = new ArrayList<>();
+            recommendedCourses.addAll(courseRepository.findByCategory(clickedCourse.getCategory()));
+            recommendedCourses.addAll(courseRepository.findByInstructor(clickedCourse.getInstructor()));
+
+            // Filter out the clicked course from the recommendations (optional)
+            recommendedCourses.removeIf(c -> c.getId() == clickedCourse.getId());
+
+            return recommendedCourses;
+        } else {
+            return new ArrayList<>();
         }
     }
 }

@@ -1,5 +1,6 @@
 package com.example.LearnUp.System.controllers.CourseController;
 
+import com.example.LearnUp.System.entity.CourseEntity.CourseEntity;
 import com.example.LearnUp.System.model.CourseModel.Course;
 import com.example.LearnUp.System.model.CourseModel.CourseResponse;
 import com.example.LearnUp.System.service.CourseService.CourseService;
@@ -55,4 +56,16 @@ public class CourseController {
         Course course = mapper.readValue(data, Course.class);
         return courseService.updateCourse(courseId, course, file);
     }
+    @GetMapping("/users/recommended/{userId}")
+    public List<Course> getRecommendedCourses(@PathVariable Long userId) {
+        return courseService.getRecommendedCourses(userId);
+    }
+
+    @GetMapping("/courses/{courseId}/recommendations")
+    public ResponseEntity<List<CourseEntity>> getCourseRecommendations(@PathVariable Long courseId) {
+        List<CourseEntity> recommendedCourses = courseService.recommendCourses(courseId);
+        return ResponseEntity.ok(recommendedCourses);
+    }
+
+
 }
