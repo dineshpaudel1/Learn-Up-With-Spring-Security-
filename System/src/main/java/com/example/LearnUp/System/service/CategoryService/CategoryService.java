@@ -9,6 +9,7 @@ import org.springframework.stereotype.Service;
 import org.springframework.web.multipart.MultipartFile;
 
 import java.util.List;
+import java.util.Optional;
 
 @Service
 public interface CategoryService {
@@ -16,4 +17,5 @@ public interface CategoryService {
     ResponseEntity<List<CategoryResponse>>getCategory();
     ResponseEntity<String>deleteCategory(Long categoryId);
     ResponseEntity<String>updateCategory(Long categoryId, Category category, MultipartFile file);
+    public ResponseEntity<CategoryResponse> getCategoryById(Long categoryId);
 }

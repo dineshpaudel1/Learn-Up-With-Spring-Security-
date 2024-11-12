@@ -1,11 +1,8 @@
 package com.example.LearnUp.System.service.CategoryService;
 
 import com.example.LearnUp.System.entity.CategoryEntity.CategoryEntity;
-import com.example.LearnUp.System.entity.CourseEntity.CourseEntity;
 import com.example.LearnUp.System.model.CategoryModel.Category;
 import com.example.LearnUp.System.model.CategoryModel.CategoryResponse;
-import com.example.LearnUp.System.model.CourseModel.Course;
-import com.example.LearnUp.System.model.CourseModel.CourseResponse;
 import com.example.LearnUp.System.model.Response;
 import com.example.LearnUp.System.repository.CategoryRepository.CategoryRepository;
 import org.springframework.beans.BeanUtils;
@@ -117,7 +114,16 @@ public class CategoryServiceImplementation implements CategoryService {
             return new ResponseEntity<>("Error while updating course: "+e.getMessage(), HttpStatus.INTERNAL_SERVER_ERROR);
         }
     }
+    @Override
+    public ResponseEntity<CategoryResponse> getCategoryById(Long categoryId) {
+        Optional<CategoryEntity> categoryEntityOptional = categoryRepository.findById(categoryId);
 
-
-
+        if (categoryEntityOptional.isPresent()) {
+            CategoryResponse categoryResponse = new CategoryResponse();
+            BeanUtils.copyProperties(categoryEntityOptional.get(), categoryResponse);
+            return new ResponseEntity<>(categoryResponse, HttpStatus.OK);
+        } else {
+            throw new ResponseStatusException(HttpStatus.NOT_FOUND, "Category not found with ID: " + categoryId);
+        }
+    }
 }

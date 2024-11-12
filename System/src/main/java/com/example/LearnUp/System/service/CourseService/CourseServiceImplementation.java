@@ -78,31 +78,7 @@ public class CourseServiceImplementation implements CourseService {
         }
     }
 
-    public List<Course> getRecommendedCourses(Long userId) {
-        // Retrieve user's enrolled courses
-        List<EnrollmentEntity> userEnrollments = enrollmentService.getUserEnrollments(userId);
 
-        // Get categories or tags from the enrolled courses
-        List<String> preferredCategories = userEnrollments.stream()
-                .map(enrollment -> enrollment.getCourseTitle()) // Get titles or categories
-                .collect(Collectors.toList());
-
-        // Fetch all courses
-        List<CourseEntity> allCourses = courseRepository.findAll();
-
-        // Filter and recommend courses based on similar categories
-        List<Course> recommendedCourses = new ArrayList<>();
-        for (CourseEntity courseEntity : allCourses) {
-            if (preferredCategories.contains(courseEntity.getCategory())) {
-                Course course = new Course(courseEntity.getCourseTitle(), courseEntity.getCourseDescription(),
-                        courseEntity.getCategory(), courseEntity.getPrice(), courseEntity.getRating(),
-                        courseEntity.getThumbnail(), courseEntity.getInstructor(), courseEntity.getLanguage());
-                recommendedCourses.add(course);
-            }
-        }
-
-        return recommendedCourses;
-    }
 
     @Override
     public ResponseEntity<List<CourseResponse>> getCourse() {

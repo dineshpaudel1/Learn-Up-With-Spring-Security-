@@ -48,5 +48,11 @@ public class CategoryControllers {
         Category category = mapper.readValue(data, Category.class);
         return categoryService.updateCategory(categoryId,category,file);
     }
+    @GetMapping("/users/category/{id}")
+    public ResponseEntity<CategoryResponse> getCategoryById(@PathVariable("id") Long categoryId) {
+        return categoryService.getCategoryById(categoryId);
+    }
+
+
 
 }

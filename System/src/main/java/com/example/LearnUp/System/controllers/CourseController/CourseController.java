@@ -28,11 +28,14 @@ public class CourseController {
 
     private final CourseService courseService;
 
+
+
     @PostMapping("/admin/add")
     public ResponseEntity<Object> addCourse(
             @RequestParam("course") String data,
             @RequestParam("file") MultipartFile file
     ) throws IOException {
+        System.out.println("hello");
         Course course = mapper.readValue(data, Course.class);
         return courseService.addCourse(course, file);
     }
@@ -56,10 +59,7 @@ public class CourseController {
         Course course = mapper.readValue(data, Course.class);
         return courseService.updateCourse(courseId, course, file);
     }
-    @GetMapping("/users/recommended/{userId}")
-    public List<Course> getRecommendedCourses(@PathVariable Long userId) {
-        return courseService.getRecommendedCourses(userId);
-    }
+
 
     @GetMapping("/courses/{courseId}/recommendations")
     public ResponseEntity<List<CourseEntity>> getCourseRecommendations(@PathVariable Long courseId) {

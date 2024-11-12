@@ -14,7 +14,6 @@ public class Course {
     private String category;
     private Long price;
     private Double rating;
-    private String thumbnail;
     private String instructor;
     private String language;
 }

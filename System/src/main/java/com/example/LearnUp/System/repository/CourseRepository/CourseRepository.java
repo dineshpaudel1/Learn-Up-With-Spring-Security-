@@ -8,5 +8,4 @@ import java.util.List;
 public interface CourseRepository extends JpaRepository<CourseEntity,Long> {
     List<CourseEntity> findByCategory(String category);
     List<CourseEntity> findByInstructor(String instructor);
-    List<CourseEntity> findByLanguage(String language);
 }
