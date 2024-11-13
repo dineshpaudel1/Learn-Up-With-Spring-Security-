@@ -8,6 +8,7 @@ import org.springframework.stereotype.Service;
 import org.springframework.web.multipart.MultipartFile;
 
 import java.util.List;
+import java.util.Optional;
 
 @Service
 public interface CourseService {
@@ -25,4 +26,5 @@ public interface CourseService {
     ResponseEntity<String> updateCourse(Long courseId, Course course, MultipartFile file);
 
     public List<CourseEntity> recommendCourses(Long courseId);
+    public ResponseEntity<CourseResponse> getCourseByTitle(String courseTitle);
 }

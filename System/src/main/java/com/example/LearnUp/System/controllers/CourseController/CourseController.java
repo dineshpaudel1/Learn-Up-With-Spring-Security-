@@ -67,5 +67,10 @@ public class CourseController {
         return ResponseEntity.ok(recommendedCourses);
     }
 
+    @GetMapping("/users/{courseTitle}")
+    public ResponseEntity<CourseResponse> getCourseByTitle(@PathVariable String courseTitle) {
+        return courseService.getCourseByTitle(courseTitle);
+    }
+
 
 }

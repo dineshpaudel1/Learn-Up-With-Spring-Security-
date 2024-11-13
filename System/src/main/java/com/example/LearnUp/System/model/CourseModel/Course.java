@@ -16,4 +16,5 @@ public class Course {
     private Double rating;
     private String instructor;
     private String language;
+    private String videoLink;
 }

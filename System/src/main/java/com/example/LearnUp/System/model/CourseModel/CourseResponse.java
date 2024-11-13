@@ -18,4 +18,5 @@ public class CourseResponse {
     private String thumbnail;
     private String instructor;
     private String language;
+    private String videoLink;
 }

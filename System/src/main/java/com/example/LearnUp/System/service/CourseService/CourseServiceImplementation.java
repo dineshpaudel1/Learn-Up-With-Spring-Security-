@@ -69,6 +69,7 @@ public class CourseServiceImplementation implements CourseService {
                     .rating(course.getRating())
                     .instructor(course.getInstructor())
                     .language(course.getLanguage())
+                    .videoLink(course.getVideoLink())
                     .build();
 
             courseRepository.save(courseEntity);
@@ -121,6 +122,7 @@ public class CourseServiceImplementation implements CourseService {
                 existingCourse.setRating(course.getRating());
                 existingCourse.setInstructor(course.getInstructor());
                 existingCourse.setLanguage(course.getLanguage());
+                existingCourse.setVideoLink(course.getVideoLink());
 
                 // Update thumbnail if a new file is provided
                 if (file != null && !file.isEmpty()) {
@@ -142,6 +144,17 @@ public class CourseServiceImplementation implements CourseService {
             }
         } catch (Exception e) {
             return new ResponseEntity<>("Error while updating course: " + e.getMessage(), HttpStatus.INTERNAL_SERVER_ERROR);
+        }
+    }
+
+    public ResponseEntity<CourseResponse> getCourseByTitle(String courseTitle) {
+        Optional<CourseEntity> courseEntity = courseRepository.findByCourseTitle(courseTitle);
+        if (courseEntity.isPresent()) {
+            CourseResponse courseResponse = new CourseResponse();
+            BeanUtils.copyProperties(courseEntity.get(), courseResponse);
+            return new ResponseEntity<>(courseResponse, HttpStatus.OK);
+        } else {
+            return new ResponseEntity<>(null, HttpStatus.NOT_FOUND);
         }
     }
 

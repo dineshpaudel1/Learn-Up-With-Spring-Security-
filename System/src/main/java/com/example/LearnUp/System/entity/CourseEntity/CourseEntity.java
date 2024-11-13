@@ -42,6 +42,9 @@ public class CourseEntity {
     @Column(name = "language", nullable = false)
     private String language;
 
+    @Column(name = "videoLink")
+    private String videoLink;
+
 
 
 }
