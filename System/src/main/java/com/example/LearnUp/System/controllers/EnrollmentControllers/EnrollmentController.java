@@ -24,5 +24,10 @@ public class EnrollmentController {
         // Call the service to save enrollment and return the result message
         return enrollmentService.saveEnrollment(enrollment);
     }
+    @DeleteMapping("/deleteEnroll/{id}")
+    public String deleteEnrollment(@PathVariable Long id) {
+        return enrollmentService.deleteEnrollment(id);
+    }
+
 
 }

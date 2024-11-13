@@ -103,7 +103,7 @@ public class CategoryServiceImplementation implements CategoryService {
                     String filepath = path + File.separator + fileName;
 
                     Files.copy(file.getInputStream(), Paths.get(filepath));
-                    existingCategory.setCategoryPhoto("category/photo?fileName="+fileName);
+                    existingCategory.setCategoryPhoto("api/photo?fileName=" + fileName);
                 }
                 categoryRepository.save(existingCategory);
                 return new ResponseEntity<>("Course updated sucessfully",HttpStatus.OK);

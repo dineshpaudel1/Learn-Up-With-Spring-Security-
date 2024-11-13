@@ -35,5 +35,16 @@ public class EnrollmentService {
         return enrollmentRepository.findByUserId(userId);
     }
 
+    public String deleteEnrollment(Long id) {
+        if (enrollmentRepository.existsById(id)) {
+            enrollmentRepository.deleteById(id);
+            return "Enrollment deleted successfully!";
+        } else {
+            return "Enrollment not found!";
+        }
+    }
+
+
+
 
 }
