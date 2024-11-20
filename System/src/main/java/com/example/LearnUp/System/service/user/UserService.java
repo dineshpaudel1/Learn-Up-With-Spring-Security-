@@ -20,5 +20,5 @@ public interface UserService {
 
     ResponseEntity<Object> updatePassword(Password password);
 
-    ResponseEntity<Object>getAllUsers();
+    ResponseEntity<Object> getAllUsers();
 }

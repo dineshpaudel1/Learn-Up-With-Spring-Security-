@@ -2,6 +2,7 @@ package com.example.LearnUp.System.service.user;
 
 import com.example.LearnUp.System.config.PasswordEncoder;
 import com.example.LearnUp.System.entity.UserEntity.PhotosEntity;
+import com.example.LearnUp.System.entity.UserEntity.Roles;
 import com.example.LearnUp.System.entity.UserEntity.UserEntity;
 import com.example.LearnUp.System.model.Response;
 import com.example.LearnUp.System.model.user.Password;
@@ -31,6 +32,7 @@ import java.util.Optional;
 import java.util.UUID;
 import java.util.logging.Level;
 import java.util.logging.Logger;
+import java.util.stream.Collectors;
 
 @Service
 @RequiredArgsConstructor
@@ -179,7 +181,25 @@ public class UserServiceImplementation implements UserService {
     public ResponseEntity<Object> getAllUsers() {
         List<UserEntity> users = usersRepository.findAll();
         if (!users.isEmpty()) {
-            return new ResponseEntity<>(users, HttpStatus.OK);
+            List<UserInfo> userInfos = users.stream()
+                    .map(user -> {
+                        UserInfo dto = new UserInfo();
+                        dto.setId(user.getId());
+                        dto.setFullName(user.getFullName());
+                        dto.setUsername(user.getUsername());
+                        dto.setEmail(user.getEmail());
+                        dto.setContact(user.getContact());
+                        dto.setName(user.getPhoto() != null ? user.getPhoto().getName() : null);
+                        if (user.getRoles() != null && !user.getRoles().isEmpty()) {
+                            Roles firstRole = user.getRoles().iterator().next(); // Get the first role
+                            dto.setRoles(firstRole);
+                        } else {
+                            dto.setRoles(null); // Handle cases where no roles are present
+                        }
+                        return dto;
+                    })
+                    .collect(Collectors.toList());
+            return new ResponseEntity<>(userInfos, HttpStatus.OK);
         } else {
             return new ResponseEntity<>(new Response("No users found"), HttpStatus.NOT_FOUND);
         }

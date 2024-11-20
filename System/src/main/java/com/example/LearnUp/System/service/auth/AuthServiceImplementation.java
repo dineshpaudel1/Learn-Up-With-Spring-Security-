@@ -1,6 +1,7 @@
 package com.example.LearnUp.System.service.auth;
 
 import com.example.LearnUp.System.config.PasswordEncoder;
+import com.example.LearnUp.System.entity.UserEntity.PhotosEntity;
 import com.example.LearnUp.System.entity.UserEntity.Roles;
 import com.example.LearnUp.System.entity.UserEntity.UserEntity;
 import com.example.LearnUp.System.jwt.JwtTokenUtil;
@@ -8,6 +9,7 @@ import com.example.LearnUp.System.model.auth.AuthRequest;
 import com.example.LearnUp.System.model.auth.AuthResponse;
 import com.example.LearnUp.System.model.Response;
 import com.example.LearnUp.System.model.user.Users;
+import com.example.LearnUp.System.repository.photos.PhotosRepository;
 import com.example.LearnUp.System.repository.user.RolesRepository;
 import com.example.LearnUp.System.repository.user.UsersRepository;
 import lombok.RequiredArgsConstructor;
@@ -19,6 +21,7 @@ import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.stereotype.Service;
 
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
 
@@ -28,6 +31,7 @@ public class AuthServiceImplementation implements AuthService, UserDetailsServic
 
     private final UsersRepository usersRepository;
     private final RolesRepository rolesRepository;
+    private final PhotosRepository photosRepository;
 
     private final JwtTokenUtil jwtTokenUtil;
 
@@ -55,11 +59,20 @@ public class AuthServiceImplementation implements AuthService, UserDetailsServic
         userEntity.setEmail(users.getEmail());
         userEntity.setContact(users.getContact());
         userEntity.setPassword(new PasswordEncoder().encodePassword(users.getPassword()));
+
         Roles roles = rolesRepository.findByName("ROLE_USER").get();
         userEntity.setRoles(List.of(roles));
+
+        PhotosEntity defaultPhoto = new PhotosEntity();
+        defaultPhoto.setName("/api/photo?fileName=images.png");
+        defaultPhoto.setUserEntity(userEntity);
+        userEntity.setPhoto(defaultPhoto);
+
         System.out.println(userEntity);
         usersRepository.save(userEntity);
         return new ResponseEntity<>(new Response("User has been registered successfully"), HttpStatus.OK);
+
+
     }
 
     @Override

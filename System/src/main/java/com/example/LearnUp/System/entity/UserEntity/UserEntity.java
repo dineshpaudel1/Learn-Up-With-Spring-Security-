@@ -4,6 +4,7 @@ import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
+import lombok.ToString;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;
 
@@ -28,6 +29,15 @@ public class UserEntity implements UserDetails {
     private String email;
     private String contact;
     private String password;
+
+    @OneToOne(mappedBy = "userEntity", cascade = CascadeType.ALL, orphanRemoval = true)
+    @ToString.Exclude // Prevent recursion
+    private PhotosEntity photo;
+
+    public void setPhoto(PhotosEntity photo) {
+        this.photo = photo;
+        photo.setUserEntity(this); // Ensure bidirectional relationship
+    }
 
     @ManyToMany(fetch = FetchType.EAGER, cascade = CascadeType.ALL)
     @JoinTable(name = "user_roles",
