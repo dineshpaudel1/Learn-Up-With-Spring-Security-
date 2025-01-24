@@ -1,5 +1,6 @@
 package com.example.LearnUp.System.entity.CourseEntity;
 
+import com.example.LearnUp.System.entity.CategoryEntity.CategoryEntity;
 import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
@@ -24,27 +25,19 @@ public class CourseEntity {
     @Column(name = "courseDescription", nullable = false, columnDefinition = "TEXT")
     private String courseDescription;
 
-    @Column(name = "category", nullable = false)
-    private String category;
 
     @Column(name = "price", nullable = false)
     private Long price;
 
-    @Column(name = "thumbnail")
-    private String thumbnail;
-
-    @Column(name = "rating")
-    private Double rating;
+    @ManyToOne
+    @JoinColumn(name = "category_id", referencedColumnName = "id", nullable = false)
+    private CategoryEntity category;
 
     @Column(name = "instructor", nullable = false)
     private String instructor;
 
     @Column(name = "language", nullable = false)
     private String language;
-
-    @Column(name = "videoLink")
-    private String videoLink;
-
 
 
 }

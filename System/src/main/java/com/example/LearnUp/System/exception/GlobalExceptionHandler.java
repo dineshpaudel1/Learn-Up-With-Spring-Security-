@@ -40,6 +40,18 @@ public class GlobalExceptionHandler{
 
     }
 
+    @ExceptionHandler(RuntimeException.class)
+    public ResponseEntity<ExceptionResponse> handleRuntimeException(RuntimeException ex) {
+        return new ResponseEntity<>(
+                ExceptionResponse.builder()
+                        .status(HttpStatus.INTERNAL_SERVER_ERROR.value())
+                        .message(ex.getMessage())
+                        .build(),
+                HttpStatus.INTERNAL_SERVER_ERROR
+        );
+    }
+
+
     @ExceptionHandler(BadCredentialsException.class)
     public ResponseEntity<ExceptionResponse> invalidCredential(BadCredentialsException ex){
         return new ResponseEntity<>(new ExceptionResponse().builder()

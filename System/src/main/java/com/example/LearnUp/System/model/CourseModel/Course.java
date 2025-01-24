@@ -13,8 +13,6 @@ public class Course {
     private String courseDescription;
     private String category;
     private Long price;
-    private Double rating;
     private String instructor;
     private String language;
-    private String videoLink;
 }

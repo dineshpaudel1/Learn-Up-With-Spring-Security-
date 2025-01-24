@@ -29,25 +29,21 @@ public class CategoryControllers {
 
 
 
-    @PostMapping("/users/addcategory")
-    public ResponseEntity<Object> addCategory(@RequestParam("category")String data, @RequestParam("file") MultipartFile file)throws IOException {
-         Category category = mapper.readValue(data, Category.class);
-        return categoryService.addCategory(category,file);
+    @PostMapping("/admin/addcategory")
+    public ResponseEntity<Object> addCategory(@RequestBody Category category){
+        return categoryService.addCategory(category);
     }
     @GetMapping("/users/category")
     public ResponseEntity<List<CategoryResponse>> getCategories() {
+
         return categoryService.getCategory();
     }
 
-    @DeleteMapping("/users/{id}")
+    @DeleteMapping("/admin/category/{id}")
     public ResponseEntity<String>deleteCategory(@PathVariable Long id) throws IOException {
         return categoryService.deleteCategory(id);
     }
-    @PostMapping("/users/{categoryId}")
-    public ResponseEntity<String>updateCategory(@PathVariable Long categoryId, @RequestParam("category")String data,@RequestParam(value="file",required=false)MultipartFile file) throws IOException{
-        Category category = mapper.readValue(data, Category.class);
-        return categoryService.updateCategory(categoryId,category,file);
-    }
+
     @GetMapping("/users/category/{id}")
     public ResponseEntity<CategoryResponse> getCategoryById(@PathVariable("id") Long categoryId) {
         return categoryService.getCategoryById(categoryId);

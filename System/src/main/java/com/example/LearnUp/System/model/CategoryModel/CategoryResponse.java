@@ -10,5 +10,4 @@ import lombok.NoArgsConstructor;
 public class CategoryResponse {
     private long id;
     private String categoryName;
-    private String categoryPhoto;
 }

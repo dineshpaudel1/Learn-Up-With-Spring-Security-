@@ -31,13 +31,8 @@ public class CourseController {
 
 
     @PostMapping("/admin/add")
-    public ResponseEntity<Object> addCourse(
-            @RequestParam("course") String data,
-            @RequestParam("file") MultipartFile file
-    ) throws IOException {
-        System.out.println("hello");
-        Course course = mapper.readValue(data, Course.class);
-        return courseService.addCourse(course, file);
+    public ResponseEntity<Object> addCourse(@RequestBody Course course) throws IOException {
+        return courseService.addCourse(course);
     }
 
     @GetMapping("/users/courses")
@@ -58,13 +53,6 @@ public class CourseController {
     ) throws IOException {
         Course course = mapper.readValue(data, Course.class);
         return courseService.updateCourse(courseId, course, file);
-    }
-
-
-    @GetMapping("/courses/{courseId}/recommendations")
-    public ResponseEntity<List<CourseEntity>> getCourseRecommendations(@PathVariable Long courseId) {
-        List<CourseEntity> recommendedCourses = courseService.recommendCourses(courseId);
-        return ResponseEntity.ok(recommendedCourses);
     }
 
     @GetMapping("/users/{courseTitle}")
