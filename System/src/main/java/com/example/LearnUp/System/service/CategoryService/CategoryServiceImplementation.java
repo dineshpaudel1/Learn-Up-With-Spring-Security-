@@ -34,32 +34,13 @@ public class CategoryServiceImplementation implements CategoryService {
     private String path;
 
     @Override
-    public ResponseEntity<Object>addCategory(Category category, MultipartFile file){
-        try{
-            String originalFileName = file.getOriginalFilename();
-            String extension = "";
-            int lastDotIndex = originalFileName.lastIndexOf('.');
-            if (lastDotIndex != -1) {
-                extension = originalFileName.substring(lastDotIndex);
-            }
-
-            String fileName = "category" + UUID.randomUUID() + extension;
-            String filepath = path + File.separator + fileName;
-
-            File f = new File(path);
-            if(!f.exists()){
-                f.mkdirs();
-            }
-            Files.copy(file.getInputStream(), Paths.get(filepath));
+    public ResponseEntity<Object>addCategory(Category category){
 
             CategoryEntity categoryEntity = CategoryEntity.builder()
-                    .categoryName(category.getCategoryName())
-                    .categoryPhoto("api/photo?fileName=" + fileName).build();
+                    .categoryName(category.getCategoryName()).build();
             categoryRepository.save(categoryEntity);
             return new ResponseEntity<>(new Response("Category has been created sucessfully"), HttpStatus.OK);
-        }catch (IOException e){
-            throw new RuntimeException(e);
-        }
+
     }
 
 
@@ -90,30 +71,7 @@ public class CategoryServiceImplementation implements CategoryService {
         }
     }
 
-    @Override
-    public ResponseEntity<String>updateCategory(Long categoryId, Category category, MultipartFile file){
-        try{
-            Optional<CategoryEntity> optionalCategory = categoryRepository.findById(categoryId);
-            if(optionalCategory.isPresent()){
-                CategoryEntity existingCategory = optionalCategory.get();
-                existingCategory.setCategoryName(category.getCategoryName());
 
-                if(file != null){
-                    String fileName = file.getOriginalFilename();
-                    String filepath = path + File.separator + fileName;
-
-                    Files.copy(file.getInputStream(), Paths.get(filepath));
-                    existingCategory.setCategoryPhoto("api/photo?fileName=" + fileName);
-                }
-                categoryRepository.save(existingCategory);
-                return new ResponseEntity<>("Course updated sucessfully",HttpStatus.OK);
-            }else{
-                return new ResponseEntity<>("Course Not found: "+categoryId, HttpStatus.NOT_FOUND);
-            }
-        }catch (Exception e){
-            return new ResponseEntity<>("Error while updating course: "+e.getMessage(), HttpStatus.INTERNAL_SERVER_ERROR);
-        }
-    }
     @Override
     public ResponseEntity<CategoryResponse> getCategoryById(Long categoryId) {
         Optional<CategoryEntity> categoryEntityOptional = categoryRepository.findById(categoryId);

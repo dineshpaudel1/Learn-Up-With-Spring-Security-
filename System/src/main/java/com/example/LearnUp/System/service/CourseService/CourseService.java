@@ -14,7 +14,7 @@ import java.util.Optional;
 public interface CourseService {
 
     // Adds a new course with details and thumbnail image file
-    ResponseEntity<Object> addCourse(Course course, MultipartFile file);
+    ResponseEntity<Object> addCourse(Course course);
 
     // Retrieves a list of all courses with response format
     ResponseEntity<List<CourseResponse>> getCourse();
@@ -25,6 +25,6 @@ public interface CourseService {
     // Updates course details by ID, including optional new thumbnail image file
     ResponseEntity<String> updateCourse(Long courseId, Course course, MultipartFile file);
 
-    public List<CourseEntity> recommendCourses(Long courseId);
+//    public List<CourseEntity> recommendCourses(Long courseId);
     public ResponseEntity<CourseResponse> getCourseByTitle(String courseTitle);
 }

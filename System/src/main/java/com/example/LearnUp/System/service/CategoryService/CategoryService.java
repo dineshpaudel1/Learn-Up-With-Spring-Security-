@@ -13,9 +13,11 @@ import java.util.Optional;
 
 @Service
 public interface CategoryService {
-    ResponseEntity<Object> addCategory(Category category,MultipartFile file);
+    ResponseEntity<Object> addCategory(Category category);
+
     ResponseEntity<List<CategoryResponse>>getCategory();
+
     ResponseEntity<String>deleteCategory(Long categoryId);
-    ResponseEntity<String>updateCategory(Long categoryId, Category category, MultipartFile file);
+
     public ResponseEntity<CategoryResponse> getCategoryById(Long categoryId);
 }

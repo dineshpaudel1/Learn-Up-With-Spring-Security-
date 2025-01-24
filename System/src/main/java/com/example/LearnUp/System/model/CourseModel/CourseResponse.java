@@ -12,11 +12,10 @@ public class CourseResponse {
     private int id;
     private String courseTitle;
     private String courseDescription;
-    private String category;
     private Long price;
     private Double rating;
     private String thumbnail;
     private String instructor;
     private String language;
-    private String videoLink;
+    private String category;
 }

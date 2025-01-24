@@ -1,13 +1,18 @@
 package com.example.LearnUp.System.service.CourseService;
 
+import com.example.LearnUp.System.entity.CategoryEntity.CategoryEntity;
 import com.example.LearnUp.System.entity.CourseEntity.CourseEntity;
+import com.example.LearnUp.System.entity.CourseEntity.CoursePhoto;
 import com.example.LearnUp.System.entity.EnrollmentEntity.EnrollmentEntity;
 import com.example.LearnUp.System.model.CourseModel.Course;
 import com.example.LearnUp.System.model.CourseModel.CourseResponse;
 import com.example.LearnUp.System.model.Response;
+import com.example.LearnUp.System.repository.CategoryRepository.CategoryRepository;
 import com.example.LearnUp.System.repository.CourseRepository.CourseRepository;
 import com.example.LearnUp.System.repository.EnrollmentRepo.EnrollmentRepository;
+import com.example.LearnUp.System.repository.photos.CoursePhotoRepository;
 import com.example.LearnUp.System.service.EnrollmentService.EnrollmentService;
+import lombok.Builder;
 import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
@@ -33,50 +38,40 @@ public class CourseServiceImplementation implements CourseService {
     private CourseRepository courseRepository;
 
     @Autowired
-    private EnrollmentRepository enrollmentRepository;
+    private CoursePhotoRepository coursePhotoRepository;
 
     @Autowired
-    private EnrollmentService enrollmentService;
+    private CategoryRepository categoryRepository;
 
     @Value("${project.image}")
     private String path;
 
     @Override
-    public ResponseEntity<Object> addCourse(Course course, MultipartFile file) {
-        try {
-            // Extract file extension and generate unique file name
-            String originalFileName = file.getOriginalFilename();
-            String extension = originalFileName != null && originalFileName.contains(".")
-                    ? originalFileName.substring(originalFileName.lastIndexOf('.'))
-                    : "";
-            String fileName = "course" + UUID.randomUUID() + extension;
-            String filepath = path + File.separator + fileName;
+    public ResponseEntity<Object> addCourse(Course course) {
 
-            // Ensure directory exists and save file
-            File f = new File(path);
-            if (!f.exists()) {
-                f.mkdirs();
-            }
-            Files.copy(file.getInputStream(), Paths.get(filepath));
+        CategoryEntity category = categoryRepository.findByCategoryName(course.getCategory())
+                .orElseThrow(() -> new RuntimeException("Category not found"));
 
-            // Create and save the course entity
+
             CourseEntity courseEntity = CourseEntity.builder()
                     .courseTitle(course.getCourseTitle())
                     .courseDescription(course.getCourseDescription())
-                    .category(course.getCategory())
                     .price(course.getPrice())
-                    .thumbnail("api/photo?fileName=" + fileName)
-                    .rating(course.getRating())
+                    .category(category)
                     .instructor(course.getInstructor())
                     .language(course.getLanguage())
-                    .videoLink(course.getVideoLink())
                     .build();
 
             courseRepository.save(courseEntity);
+
+
+            CoursePhoto coursePhoto = CoursePhoto.builder()
+                    .coursePhotoName("/api/photo?fileName=category.png")
+                    .course(courseEntity)
+                    .build();
+            coursePhotoRepository.save(coursePhoto);
             return new ResponseEntity<>(new Response("Course has been added successfully"), HttpStatus.OK);
-        } catch (IOException e) {
-            throw new RuntimeException("Error adding course", e);
-        }
+
     }
 
 
@@ -109,42 +104,42 @@ public class CourseServiceImplementation implements CourseService {
 
     @Override
     public ResponseEntity<String> updateCourse(Long courseId, Course course, MultipartFile file) {
-        try {
-            Optional<CourseEntity> optionalCourse = courseRepository.findById(courseId);
-            if (optionalCourse.isPresent()) {
-                CourseEntity existingCourse = optionalCourse.get();
-
-                // Update fields
-                existingCourse.setCourseTitle(course.getCourseTitle());
-                existingCourse.setCourseDescription(course.getCourseDescription());
-                existingCourse.setCategory(course.getCategory());
-                existingCourse.setPrice(course.getPrice());
-                existingCourse.setRating(course.getRating());
-                existingCourse.setInstructor(course.getInstructor());
-                existingCourse.setLanguage(course.getLanguage());
-                existingCourse.setVideoLink(course.getVideoLink());
-
-                // Update thumbnail if a new file is provided
-                if (file != null && !file.isEmpty()) {
-                    String originalFileName = file.getOriginalFilename();
-                    String extension = originalFileName != null && originalFileName.contains(".")
-                            ? originalFileName.substring(originalFileName.lastIndexOf('.'))
-                            : "";
-                    String fileName = "course" + UUID.randomUUID() + extension;
-                    String filepath = path + File.separator + fileName;
-
-                    Files.copy(file.getInputStream(), Paths.get(filepath));
-                    existingCourse.setThumbnail("api/photo?fileName=" + fileName);
-                }
-
-                courseRepository.save(existingCourse);
-                return new ResponseEntity<>("Course updated successfully", HttpStatus.OK);
-            } else {
-                return new ResponseEntity<>("Course not found: " + courseId, HttpStatus.NOT_FOUND);
-            }
-        } catch (Exception e) {
-            return new ResponseEntity<>("Error while updating course: " + e.getMessage(), HttpStatus.INTERNAL_SERVER_ERROR);
-        }
+//        try {
+//            Optional<CourseEntity> optionalCourse = courseRepository.findById(courseId);
+//            if (optionalCourse.isPresent()) {
+//                CourseEntity existingCourse = optionalCourse.get();
+//
+//                // Update fields
+//                existingCourse.setCourseTitle(course.getCourseTitle());
+//                existingCourse.setCourseDescription(course.getCourseDescription());
+//                existingCourse.setCategory(course.getCategory());
+//                existingCourse.setPrice(course.getPrice());
+//                existingCourse.setInstructor(course.getInstructor());
+//                existingCourse.setLanguage(course.getLanguage());
+//                existingCourse.setVideoLink(course.getVideoLink());
+//
+//                // Update thumbnail if a new file is provided
+//                if (file != null && !file.isEmpty()) {
+//                    String originalFileName = file.getOriginalFilename();
+//                    String extension = originalFileName != null && originalFileName.contains(".")
+//                            ? originalFileName.substring(originalFileName.lastIndexOf('.'))
+//                            : "";
+//                    String fileName = "course" + UUID.randomUUID() + extension;
+//                    String filepath = path + File.separator + fileName;
+//
+//                    Files.copy(file.getInputStream(), Paths.get(filepath));
+//                    existingCourse.setThumbnail("api/photo?fileName=" + fileName);
+//                }
+//
+//                courseRepository.save(existingCourse);
+//                return new ResponseEntity<>("Course updated successfully", HttpStatus.OK);
+//            } else {
+//                return new ResponseEntity<>("Course not found: " + courseId, HttpStatus.NOT_FOUND);
+//            }
+//        } catch (Exception e) {
+//            return new ResponseEntity<>("Error while updating course: " + e.getMessage(), HttpStatus.INTERNAL_SERVER_ERROR);
+//        }
+        return null;
     }
 
     public ResponseEntity<CourseResponse> getCourseByTitle(String courseTitle) {
@@ -158,23 +153,4 @@ public class CourseServiceImplementation implements CourseService {
         }
     }
 
-    public List<CourseEntity> recommendCourses(Long courseId) {
-        // Fetch the course that the user clicked on
-        Optional<CourseEntity> course = courseRepository.findById(courseId);
-        if (course.isPresent()) {
-            CourseEntity clickedCourse = course.get();
-
-            // Fetch other courses with similar category, instructor, and language
-            List<CourseEntity> recommendedCourses = new ArrayList<>();
-            recommendedCourses.addAll(courseRepository.findByCategory(clickedCourse.getCategory()));
-            recommendedCourses.addAll(courseRepository.findByInstructor(clickedCourse.getInstructor()));
-
-            // Filter out the clicked course from the recommendations (optional)
-            recommendedCourses.removeIf(c -> c.getId() == clickedCourse.getId());
-
-            return recommendedCourses;
-        } else {
-            return new ArrayList<>();
-        }
-    }
 }

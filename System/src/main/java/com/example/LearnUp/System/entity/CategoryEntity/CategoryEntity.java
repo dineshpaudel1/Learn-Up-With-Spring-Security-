@@ -10,7 +10,8 @@ import lombok.NoArgsConstructor;
 @Entity
 @Builder
 @Data
-@Table(name = "course_category")
+@Table(name = "course_category",
+        uniqueConstraints = @UniqueConstraint(columnNames = "category_name"))
 @AllArgsConstructor
 @NoArgsConstructor
 public class CategoryEntity {
@@ -18,9 +19,6 @@ public class CategoryEntity {
     @GeneratedValue(strategy = GenerationType.AUTO)
     private long id;
 
-
     @Column(name = "category_name")
     private String categoryName;
-    @Column(name = "category_photo")
-    private String categoryPhoto;
 }
