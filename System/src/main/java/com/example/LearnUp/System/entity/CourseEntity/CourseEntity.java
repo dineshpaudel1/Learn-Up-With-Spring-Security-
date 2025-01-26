@@ -1,6 +1,7 @@
 package com.example.LearnUp.System.entity.CourseEntity;
 
 import com.example.LearnUp.System.entity.CategoryEntity.CategoryEntity;
+import com.example.LearnUp.System.entity.TeacherEntity.TeacherEntity;
 import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
@@ -33,8 +34,9 @@ public class CourseEntity {
     @JoinColumn(name = "category_id", referencedColumnName = "id", nullable = false)
     private CategoryEntity category;
 
-    @Column(name = "instructor", nullable = false)
-    private String instructor;
+    @OneToOne
+    @JoinColumn(name = "instructor" ,referencedColumnName = "id", nullable = false)
+    private TeacherEntity teacher;
 
     @Column(name = "language", nullable = false)
     private String language;

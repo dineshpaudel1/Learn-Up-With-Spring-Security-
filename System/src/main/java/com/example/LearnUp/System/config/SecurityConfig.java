@@ -66,7 +66,12 @@ public class SecurityConfig {
                                     new AntPathRequestMatcher("/api/roles/**"),
                                     new AntPathRequestMatcher("/bye")
                             ).hasRole("ADMIN")
-                            .requestMatchers("/api/user/**").hasAnyRole("USER","ADMIN","TEACHER")
+                            .requestMatchers(
+                                    new AntPathRequestMatcher("/api/teacher/*")
+                            ).hasRole("TEACHER")
+                            .requestMatchers(
+                                    new AntPathRequestMatcher("/api/user/**")
+                            ).hasAnyRole("USER","ADMIN","TEACHER")
                             .anyRequest().authenticated()
             )
             .exceptionHandling().authenticationEntryPoint(jwtAuthenticationEntryPoint)
