@@ -16,11 +16,13 @@ public class RolesController {
 
     @PutMapping("/adminRole/{id}")
     public ResponseEntity<Object> setAdminRole(@PathVariable("id") Long id){
+
         return rolesService.setRole(id);
     }
 
     @PutMapping("/teacherRole/{id}")
     public ResponseEntity<Object> setTeacher(@PathVariable("id") Long id){
+
         return rolesService.setTeacherRole(id);
     }
 
@@ -32,6 +34,7 @@ public class RolesController {
 
     @PostMapping("/addRole")
     public ResponseEntity<Object> addRole(@RequestBody Roles roles){
+
         return rolesService.addRole(roles);
     }
 }

@@ -13,6 +13,6 @@ public class Course {
     private String courseDescription;
     private String category;
     private Long price;
-    private String instructor;
+    private Long instructorId;
     private String language;
 }

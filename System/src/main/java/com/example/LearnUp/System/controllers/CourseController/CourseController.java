@@ -30,7 +30,7 @@ public class CourseController {
 
 
 
-    @PostMapping("/admin/add")
+    @PostMapping("/teacher/addCourse")
     public ResponseEntity<Object> addCourse(@RequestBody Course course) throws IOException {
         return courseService.addCourse(course);
     }
@@ -40,12 +40,12 @@ public class CourseController {
         return courseService.getCourse();
     }
 
-    @DeleteMapping("/admin/{id}")
+    @DeleteMapping("/teacher/{id}")
     public ResponseEntity<String> deleteCourse(@PathVariable Long id) throws IOException {
         return courseService.deleteCourse(id);
     }
 
-    @PostMapping("/admin/{courseId}")
+    @PostMapping("/teacher/{courseId}")
     public ResponseEntity<String> updateCourse(
             @PathVariable Long courseId,
             @RequestParam("course") String data,
