@@ -3,7 +3,6 @@ package com.example.LearnUp.System.model.CourseModel;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
-import java.time.LocalDate;
 
 @Data
 @AllArgsConstructor
@@ -13,9 +12,8 @@ public class CourseResponse {
     private String courseTitle;
     private String courseDescription;
     private Long price;
-    private Double rating;
     private String thumbnail;
-    private String instructor;
+    private Long instructorId;
     private String language;
     private String category;
 }

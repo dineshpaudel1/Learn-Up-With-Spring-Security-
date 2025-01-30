@@ -15,7 +15,7 @@ public class TeachersController {
 
     private final TeacherService teacherService;
 
-    @PostMapping("teacher/register")
+    @PostMapping("user/teacherRegister")
     public ResponseEntity<Object> registerTeacher(@RequestBody Teacher teacher) {
 
         System.out.println(teacher);
