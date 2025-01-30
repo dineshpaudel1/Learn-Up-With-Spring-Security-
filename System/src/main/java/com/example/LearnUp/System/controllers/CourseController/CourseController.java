@@ -1,7 +1,5 @@
 package com.example.LearnUp.System.controllers.CourseController;
 
-import com.example.LearnUp.System.entity.CourseEntity.CourseEntity;
-import com.example.LearnUp.System.model.CourseModel.Course;
 import com.example.LearnUp.System.model.CourseModel.CourseResponse;
 import com.example.LearnUp.System.service.CourseService.CourseService;
 import com.fasterxml.jackson.databind.ObjectMapper;
@@ -10,7 +8,6 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
-import org.springframework.web.multipart.MultipartFile;
 
 import java.io.IOException;
 import java.util.List;
@@ -30,35 +27,18 @@ public class CourseController {
 
 
 
-    @PostMapping("/teacher/addCourse")
-    public ResponseEntity<Object> addCourse(@RequestBody Course course) throws IOException {
-        return courseService.addCourse(course);
-    }
-
     @GetMapping("/users/courses")
-    public ResponseEntity<List<CourseResponse>> getCourse() {
-        return courseService.getCourse();
+    public ResponseEntity<Object> getAllCourses() {
+
+        return courseService.getAllCourses();
     }
 
-    @DeleteMapping("/teacher/{id}")
-    public ResponseEntity<String> deleteCourse(@PathVariable Long id) throws IOException {
-        return courseService.deleteCourse(id);
-    }
+    @GetMapping("/users/viewCourses/{id}")
+    public ResponseEntity<Object> getCoursesByTeacher(@PathVariable("id") Long id) throws IOException {
 
-    @PostMapping("/teacher/{courseId}")
-    public ResponseEntity<String> updateCourse(
-            @PathVariable Long courseId,
-            @RequestParam("course") String data,
-            @RequestParam(value = "file", required = false) MultipartFile file
-    ) throws IOException {
-        Course course = mapper.readValue(data, Course.class);
-        return courseService.updateCourse(courseId, course, file);
-    }
-
-    @GetMapping("/users/{courseTitle}")
-    public ResponseEntity<CourseResponse> getCourseByTitle(@PathVariable String courseTitle) {
-        return courseService.getCourseByTitle(courseTitle);
+        return courseService.viewCourses(id);
     }
 
 
 }
+
