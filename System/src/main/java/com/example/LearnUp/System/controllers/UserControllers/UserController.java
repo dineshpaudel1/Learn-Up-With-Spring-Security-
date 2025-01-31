@@ -18,6 +18,12 @@ public class UserController {
 
     private final UserService userService;
 
+    @GetMapping("/users/check")
+    public String checkServer() {
+        return "hello";
+    }
+
+
     @GetMapping("/user/all")
     public ResponseEntity<Object> getMyUsers() {
 

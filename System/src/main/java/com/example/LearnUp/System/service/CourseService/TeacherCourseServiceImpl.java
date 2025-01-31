@@ -56,5 +56,11 @@ public class TeacherCourseServiceImpl implements TeacherCourseService{
 
     }
 
+@Override
+public ResponseEntity<Object> updateThumbnail(Course course) {
+        // TODO Auto-generated method stub
+        throw new UnsupportedOperationException("Unimplemented method 'updateThumbnail'");
+}
+
 
 }

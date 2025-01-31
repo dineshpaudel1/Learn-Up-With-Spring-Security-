@@ -24,7 +24,6 @@ public class TeachersController {
 
     @GetMapping("admin/viewUnApproved")
     public ResponseEntity<Object> unApprovedTeacher() {
-
         return teacherService.getUnApprovedTeacher();
     }
 
