@@ -14,6 +14,7 @@ import com.example.LearnUp.System.repository.user.UsersRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
@@ -69,5 +70,17 @@ public class TeacherServiceImpl implements TeacherService{
         userRolesRepository.save(userRoles);
         teachersRepository.save(teacherEntity);
         return new ResponseEntity<>(new Response("Teacher has been verified"), HttpStatus.OK);
+    }
+
+    @Override
+    public ResponseEntity<Object> getTeacherInfo() {
+        UserEntity user = (UserEntity) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
+
+        TeacherInfo info = teachersRepository.findTeacherById(user.getId());
+
+        if (info == null) {
+            return new ResponseEntity<>(new Response("User with "+ user.getId()+ " not found"), HttpStatus.NOT_FOUND);
+        }
+        return new ResponseEntity<>(info, HttpStatus.OK);
     }
 }

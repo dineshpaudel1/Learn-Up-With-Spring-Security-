@@ -56,5 +56,10 @@ public class TeacherCourseServiceImpl implements TeacherCourseService{
 
     }
 
+    @Override
+    public ResponseEntity<Object> updateThumbnail(Course course) {
+        return null;
+    }
+
 
 }

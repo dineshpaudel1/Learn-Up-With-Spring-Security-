@@ -23,6 +23,7 @@ public class TeacherCourseController {
         return teacherCourseService.addCourse(course);
     }
 
+    @PutMapping
     public ResponseEntity<Object> updateThumbnail(@RequestBody Course course){
         return teacherCourseService.updateThumbnail(course);
     }

@@ -1,6 +1,7 @@
 package com.example.LearnUp.System.controllers;
 
 import com.example.LearnUp.System.model.teacher.Teacher;
+import com.example.LearnUp.System.model.teacher.TeacherInfo;
 import com.example.LearnUp.System.service.Teacher.TeacherService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
@@ -32,4 +33,12 @@ public class TeachersController {
     public ResponseEntity<Object> approveTeacher(@RequestBody Teacher teacher) {
         return teacherService.verifyTeacher(teacher);
     }
+
+    @GetMapping("teacher/getInfo")
+    public ResponseEntity<Object> getTeacherInfo(){
+        return teacherService.getTeacherInfo();
+    }
+
+    
+
 }
