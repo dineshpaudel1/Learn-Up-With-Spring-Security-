@@ -1,6 +1,7 @@
 package com.example.LearnUp.System.service.Teacher;
 
 import com.example.LearnUp.System.model.teacher.Teacher;
+import com.example.LearnUp.System.model.teacher.TeacherInfo;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
 
@@ -12,4 +13,6 @@ public interface TeacherService {
     ResponseEntity<Object> getUnApprovedTeacher();
 
     ResponseEntity<Object> verifyTeacher(Teacher teacher);
+
+    ResponseEntity<Object> getTeacherInfo();
 }

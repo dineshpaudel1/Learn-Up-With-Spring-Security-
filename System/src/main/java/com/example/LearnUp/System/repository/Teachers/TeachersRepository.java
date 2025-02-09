@@ -19,4 +19,11 @@ public interface TeachersRepository extends JpaRepository<TeacherEntity, Long> {
             "INNER JOIN PhotosEntity p ON u.id = p.userEntity.id " +
             "WHERE t.status = :status")
     List<TeacherInfo> findTeacherByStatus(@Param("status") Boolean status);
+
+    @Query("SELECT new com.example.LearnUp.System.model.teacher.TeacherInfo(t.id, u.fullName, u.photo.name, t.highestQualification, t.speciality, t.bio) " +
+            "FROM TeacherEntity t " +
+            "INNER JOIN UserEntity u ON t.user.id = u.id " +
+            "INNER JOIN PhotosEntity p ON u.id = p.userEntity.id " +
+            "WHERE t.user.id = :id")
+    TeacherInfo findTeacherById(Long id);
 }
