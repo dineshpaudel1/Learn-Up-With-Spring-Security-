@@ -22,19 +22,16 @@ public class RolesController {
 
     @PutMapping("/teacherRole/{id}")
     public ResponseEntity<Object> setTeacher(@PathVariable("id") Long id){
-
         return rolesService.setTeacherRole(id);
     }
 
     @PutMapping("/userRole/{id}")
     public ResponseEntity<Object> setUserRole(@PathVariable("id") Long id){
-
         return rolesService.setUserRole(id);
     }
 
     @PostMapping("/addRole")
     public ResponseEntity<Object> addRole(@RequestBody Roles roles){
-
         return rolesService.addRole(roles);
     }
 }
