@@ -71,6 +71,7 @@ public class TeacherCourseServiceImpl implements TeacherCourseService{
 
     }
 
+
     @Override
     public ResponseEntity<Object> updateThumbnail(MultipartFile file, Course course) {
         try {
@@ -78,6 +79,7 @@ public class TeacherCourseServiceImpl implements TeacherCourseService{
             if (file == null || file.isEmpty()) {
                 return new ResponseEntity<>(new Response("File is required"), HttpStatus.BAD_REQUEST);
             }
+
 
             // Get user from security context
             Object principal = SecurityContextHolder.getContext().getAuthentication().getPrincipal();
@@ -141,9 +143,6 @@ public class TeacherCourseServiceImpl implements TeacherCourseService{
             return new ResponseEntity<>(new Response("An unexpected error occurred"), HttpStatus.INTERNAL_SERVER_ERROR);
         }
     }
-
-
-
 
 
     }
