@@ -1,6 +1,8 @@
 package com.example.LearnUp.System.service.CategoryService;
 
 import com.example.LearnUp.System.entity.CategoryEntity.CategoryEntity;
+import com.example.LearnUp.System.entity.UserEntity.PhotosEntity;
+import com.example.LearnUp.System.entity.UserEntity.UserEntity;
 import com.example.LearnUp.System.model.CategoryModel.Category;
 import com.example.LearnUp.System.model.CategoryModel.CategoryResponse;
 import com.example.LearnUp.System.model.Response;
@@ -37,7 +39,9 @@ public class CategoryServiceImplementation implements CategoryService {
     public ResponseEntity<Object>addCategory(Category category){
 
             CategoryEntity categoryEntity = CategoryEntity.builder()
-                    .categoryName(category.getCategoryName()).build();
+                    .categoryName(category.getCategoryName())
+                    .photo("/api/photo?fileName=categorythumbnail.jpg")
+                    .build();
             categoryRepository.save(categoryEntity);
             return new ResponseEntity<>(new Response("Category has been created sucessfully"), HttpStatus.OK);
 
@@ -83,5 +87,52 @@ public class CategoryServiceImplementation implements CategoryService {
         } else {
             throw new ResponseStatusException(HttpStatus.NOT_FOUND, "Category not found with ID: " + categoryId);
         }
+    }
+
+    @Override
+    public ResponseEntity<Object> updatePhoto(MultipartFile file, Category category){
+        try{
+            if (file == null || file.isEmpty()) {
+                return new ResponseEntity<>(new Response("File is required"), HttpStatus.BAD_REQUEST);
+            }
+
+            if (category == null || category.getId() == null) {
+                return new ResponseEntity<>(new Response("Category is required"), HttpStatus.BAD_REQUEST);
+            }
+
+            // Check if the category exists
+            CategoryEntity categoryEntity = categoryRepository.findById(category.getId())
+                    .orElseThrow(() -> new RuntimeException("Category not found with ID: " + category.getId()));
+
+
+            String originalFileName = file.getOriginalFilename();
+            String extension = "";
+            int lastDotIndex = originalFileName.lastIndexOf('.');
+            if (lastDotIndex != -1) {
+                extension = originalFileName.substring(lastDotIndex);
+            }
+
+            String fileName = "category" + UUID.randomUUID() + extension;
+            String filePath = path + File.separator + fileName;
+
+            File f = new File(path);
+            if (!f.exists()) {
+                f.mkdir();
+            }
+            Files.copy(file.getInputStream(), Paths.get(filePath));
+
+
+            categoryEntity.setPhoto("/api/photo?fileName=" + fileName);
+            categoryRepository.save(categoryEntity);
+
+            return new ResponseEntity<>(new Response("Photo has been updated successfully"), HttpStatus.OK);
+        }catch (IOException e) {
+            return new ResponseEntity<>(new Response("Error saving file: " + e.getMessage()), HttpStatus.INTERNAL_SERVER_ERROR);
+        } catch (RuntimeException e) {
+            return new ResponseEntity<>(new Response(e.getMessage()), HttpStatus.NOT_FOUND);
+        } catch (Exception e) {
+            return new ResponseEntity<>(new Response("An unexpected error occurred"), HttpStatus.INTERNAL_SERVER_ERROR);
+        }
+
     }
 }
